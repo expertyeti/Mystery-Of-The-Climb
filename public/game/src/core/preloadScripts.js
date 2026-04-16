@@ -12,6 +12,7 @@
 
     const jsonUrl = window.BASE_URL + "src/core/preload.scripts.json";
 
+    
     try {
         // Descargar el JSON directamente desde el navegador
         const response = await fetch(jsonUrl);
