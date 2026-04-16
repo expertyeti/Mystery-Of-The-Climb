@@ -1,0 +1,53 @@
+{
+  "applicationId": "js.neutralino.sample",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "port": 0,
+  "documentRoot": "/public/game/",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "tokenSecurity": "one-time",
+  "logging": {
+    "enabled": true,
+    "writeToLogFile": false
+  },
+  "nativeAllowList": [
+    "app.*",
+    "os.*",
+    "window.*",
+    "events.*",
+    "filesystem.*",
+    "extensions.*",
+    "storage.*"
+  ],
+  "globalVariables": {},
+  "modes": {
+    "window": {
+      "title": "Mystery Of The Limb",
+      "width": 720,
+      "height": 1280,
+      "minWidth": 400,
+      "minHeight": 200,
+      "center": true,
+      "fullScreen": false,
+      "alwaysOnTop": false,
+      "icon": "/appIcon.png",
+      "enableInspector": true,
+      "borderless": false,
+      "maximize": true,
+      "hidden": false,
+      "resizable": true,
+      "exitProcessOnClose": true,
+      "webviewArgs": "--autoplay-policy=no-user-gesture-required --disable-features=PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies"
+    }
+  },
+  "cli": {
+    "binaryName": "MOL",
+    "resourcesPath": "/public/game/",
+    "extensionsPath": "/extensions/",
+    "clientLibrary": "/public/game/src/core/native/neutralino.js",
+    "binaryVersion": "6.7.0",
+    "clientVersion": "6.7.0"
+  }
+}
