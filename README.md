@@ -1,7 +1,11 @@
 # MOL
 
-ran npm install
+ran npm install for install eveywere
+
+
 test:
+
+
 pc: neu run
 
 mobile: expo start
