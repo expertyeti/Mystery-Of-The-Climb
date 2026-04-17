@@ -1,0 +1,22 @@
+[
+  // Centralized logging
+  "src/core/logs.js",
+
+  // Utilities
+  "src/utils/display/windowUtils.js",
+  "src/utils/display/commit.js",
+
+  // Global HUD System (Must load before HUD modules)
+  "src/core/globalHud.js",
+  "src/utils/globalHUD/debugText.js",
+
+  // Debugging
+  "src/utils/debugging/play/alternateModes.js",
+  "src/utils/debugging/debugManager.js",
+
+  // Scenes
+  "src/scenes/play/playScene.js",
+
+  // Core Game Initialization (Must be last)
+  "src/core/game.js"
+]

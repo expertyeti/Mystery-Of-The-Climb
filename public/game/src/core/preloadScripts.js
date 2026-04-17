@@ -1,54 +1,33 @@
 /**
- * @file preloadScripts.js (Client-Side Dynamic Loader)
- * Lee preload.scripts.json mediante fetch y carga los scripts dinámicamente en el navegador.
- * Arquitectura sin-compilación (No-Build).
+ * @file preloadScripts.js
+ * Sequential script injector.
  */
+async function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = false;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error(`Failed: ${src}`));
+        document.head.appendChild(s);
+    });
+}
 
-(async function initGenesisEngine() {
-    // Asegurar el BASE_URL para Neutralino / React Native
-    if (!window.BASE_URL) {
-        window.BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, "/");
-    }
-
-    const jsonUrl = window.BASE_URL + "src/core/preload.scripts.json";
-
+(async function init() {
+    const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, "/");
+    const jsonUrl = base + "src/core/preload.scripts.jsonc";
     
     try {
-        // Descargar el JSON directamente desde el navegador
-        const response = await fetch(jsonUrl);
-        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const res = await fetch(jsonUrl);
+        const text = await res.text();
+        // Simple JSONC cleaning
+        const scripts = JSON.parse(text.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, ''));
         
-        const scripts = await response.json();
-        console.log(`%cInyectando ${scripts.length} módulos...`, "color: #00ff00; font-weight: bold;");
-
-        let loadedCounter = 0;
-        const totalScripts = scripts.length;
-
-        // Inyectar los scripts dinámicamente
-        for (let i = 0; i < totalScripts; i++) {
-            const scriptEl = document.createElement("script");
-            
-            // Combinar BASE_URL con la ruta relativa del JSON
-            scriptEl.src = window.BASE_URL + scripts[i];
-            
-            // Permite descargar en paralelo pero ejecuta secuencialmente
-            scriptEl.async = false; 
-
-            scriptEl.onload = () => {
-                loadedCounter++;
-                if (loadedCounter === totalScripts) {
-                    console.log("%cTodos los módulos cargados! Motor listo.", "color: #00ff00; font-weight: bold;");
-                }
-            };
-
-            scriptEl.onerror = () => {
-                console.log(`%cError crítico al cargar: ${scripts[i]}`, "color: #ff4444; font-weight: bold;");
-            };
-
-            document.head.appendChild(scriptEl);
+        for (const path of scripts) {
+            await loadScript(base + path);
         }
-
-    } catch (error) {
-        console.log("%cFallo al inicializar el motor:", "color: #ff4444; font-weight: bold;", error);
+        console.log("[Engine] All scripts loaded successfully");
+    } catch (e) {
+        console.error("[Engine] Boot error:", e);
     }
 })();
